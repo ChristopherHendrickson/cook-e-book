@@ -20,13 +20,11 @@ const authenticate = (req,res,next) => {
   auth(req,res,next)
 }
 
-router.post('/login', authenticate, (req, res) => {
-  const { id, username } = req.user
-
+router.post('/api/auth/login', authenticate, (req, res) => {
   res.json(req.user)
 })
 
-router.post('/logout', (req, res) => {
+router.post('/api/auth/logout', (req, res) => {
     const loggedOutUser = req.user
     if (loggedOutUser) {
         req.logout(() => {
@@ -44,7 +42,7 @@ router.post('/logout', (req, res) => {
 })
 
 
-router.get('/loggedinuser', (req,res) => {
+router.get('/api/auth/loggedinuser', (req,res) => {
   if (req.user) {
 
     res.json(req.user)
@@ -54,24 +52,22 @@ router.get('/loggedinuser', (req,res) => {
 })
 
 
-router.post('/register', async (req,res)=>{
+router.post('/api/auth/register', async (req,res)=>{
   const {username, password, confirmPassword} = req.body
   if (password !== confirmPassword) {
     res.status(400).json({message: "Passwords do not match"})
   }
   try {
-      if (password === confirmPassword) { 
-        const user = await User.register(    
-            new User({
-              username:username,              
-            }),
-            password
-        )
+      const user = await User.register(    
+          new User({
+            username:username,              
+          }),
+          password
+      )
 
-        req.login(user, () => {
-            res.json(user) 
-        })
-      }
+      req.login(user, () => {
+          res.json(user) 
+      })
   } catch (error) {
       res.status(403).json(error)
   }
