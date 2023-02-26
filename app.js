@@ -30,7 +30,6 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 
 app.use(express.static('public'))
-// app.use(methodOverride('_method'))
 app.use(express.urlencoded({extended:true}))
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -53,10 +52,11 @@ app.use(authApi)
 app.use(dbApi)
 app.use(errorHandler)
 
+mongoose.connect(dbURL, ()=>{
+  console.log('connected to database')
+})
+
 app.listen(PORT, () => {
   console.log('Listening on port', PORT)
 })
 
-mongoose.connect(dbURL, ()=>{
-  console.log('connected to database')
-})

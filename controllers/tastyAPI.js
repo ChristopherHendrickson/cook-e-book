@@ -7,11 +7,15 @@ const X_RapidAPI_Host = process.env.X_RapidAPI_Host
 
 
 const getTastyApiResponse = async(req) => {
-    let url = `https://tasty.p.rapidapi.com/recipes/list?from=${req.params.from}&size=15&tags=dinner`;
+    let url = `https://tasty.p.rapidapi.com/recipes/list?size=15&tags=dinner`;
 
-    if (req.params.q!=="null") {
-        url+=`&q=${req.params.q}`
+    if (req.query.q) {
+        url+=`&q=${req.query.q}`
     }
+    if (req.query.from) {
+        url+=`&from=${req.query.from}`
+    }
+    
 
     const options = {
         method: 'GET',
@@ -116,7 +120,7 @@ const mappedRecipeListGenerator = async(req) => {
     return internalRecipeMapper(apiResponse)
 }
 
-router.get('/api/external/recipes/:from/:q', async(req,res) => {
+router.get('/api/external/recipes/', async(req,res) => {
     const response = await mappedRecipeListGenerator(req)
     res.json(response)
 })
