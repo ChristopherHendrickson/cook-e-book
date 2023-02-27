@@ -10,7 +10,7 @@ const authenticate = (req,res,next) => {
       next(err)
     }
     if (!user) {
-      res.status(401).json({msg: 'Incorrect username or password'})
+      res.status(401).json({message: 'Incorrect username or password'})
     }
     req.logIn(user, (err) => {
       if (err) next(err)
@@ -29,13 +29,13 @@ router.post('/api/auth/logout', (req, res) => {
     if (loggedOutUser) {
         req.logout(() => {
             res.json({
-                msg:'Successfully Logged out',
+                message:'Successfully Logged out',
                 user:loggedOutUser
             })
         })
     } else {
         res.json({
-            msg:'No Logged In User',
+            message:'No Logged In User',
             user:null
         })
     }
@@ -44,7 +44,7 @@ router.post('/api/auth/logout', (req, res) => {
 
 router.get('/api/auth/loggedinuser', (req,res) => {
   if (req.user) {
-
+    
     res.json(req.user)
   } else {
     res.status(404).json({ msg: 'User not logged in' })
@@ -55,7 +55,7 @@ router.get('/api/auth/loggedinuser', (req,res) => {
 router.post('/api/auth/register', async (req,res)=>{
   const {username, password, confirmPassword} = req.body
   if (password !== confirmPassword) {
-    res.status(400).json({message: "Passwords do not match"})
+    return res.status(400).json({message: "Passwords do not match"})
   }
   try {
       const user = await User.register(    
@@ -66,7 +66,7 @@ router.post('/api/auth/register', async (req,res)=>{
       )
 
       req.login(user, () => {
-          res.json(user) 
+          res.status(201).json(user) 
       })
   } catch (error) {
       res.status(403).json(error)

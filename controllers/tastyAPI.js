@@ -6,8 +6,12 @@ const X_RapidAPI_Host = process.env.X_RapidAPI_Host
 
 
 
-const getTastyApiResponse = async(req) => {
+const getTastyApiResponse = async(req,res,next) => {
     let url = `https://tasty.p.rapidapi.com/recipes/list?size=15&tags=dinner`;
+
+    if (req.query.tags) {
+        url+=`,${req.query.tags}`
+    }
 
     if (req.query.q) {
         url+=`&q=${req.query.q}`
@@ -15,8 +19,9 @@ const getTastyApiResponse = async(req) => {
     if (req.query.from) {
         url+=`&from=${req.query.from}`
     }
-    
 
+    
+    console.log(url)
     const options = {
         method: 'GET',
         headers: {
@@ -27,7 +32,13 @@ const getTastyApiResponse = async(req) => {
 
     const responseData = await fetch(url, options)
     const response = await responseData.json()
-    return response.results
+    console.log(response)
+    if (!response.results) { // api has bad error handling, error objects are returned with status 200 with inconsistent object keys. So assuming if there are no results it is an error. 
+        res.status(400).json({message:'Bad Request'})
+    } else {
+        return response.results
+    } 
+    
 }
 
 
@@ -77,20 +88,24 @@ const internalRecipeMapper = (recipeData) => {
 
     const extractTags = (recipeData) => {
         const extractedTags = []
-        const includedTagTypes = ['dietary','cuisine','healthy'] 
+        const includedTagTypes = ['dietary','cuisine','healthy','difficulty'] 
+        let timeTagAlreadyIncluded = false
+
         recipeData.tags.forEach((tag)=>{
-            if (includedTagTypes.includes(tag.type)) {
+            if (includedTagTypes.includes(tag.type) && !(timeTagAlreadyIncluded && tag.name.includes('under'))) {
                 extractedTags.push({
                     type:tag.type,
                     name:tag.display_name
                 })
             }
+            if (tag.type == 'difficulty' && tag.name.includes('under')) {
+                timeTagAlreadyIncluded = true
+            }
         })
         return extractedTags
     }
 
-    const newRecipes = []
-
+    const mappedRecipes = []
     recipeData.forEach((recipe)=>{
         if (Object.keys(recipe).includes('recipes')) {
             recipe = recipe.recipes[0]
@@ -107,22 +122,27 @@ const internalRecipeMapper = (recipeData) => {
             numServings:recipe.num_servings,
             thumbnailURL:recipe.thumbnail_url
         }
-        newRecipes.push(newRecipe)
+        mappedRecipes.push(newRecipe)
     })
-    return newRecipes
+    return mappedRecipes
 
 }
 
 
 
-const mappedRecipeListGenerator = async(req) => {
-    const apiResponse = await getTastyApiResponse(req)
-    return internalRecipeMapper(apiResponse)
+const mappedRecipeListGenerator = async(req,res,next) => {
+    const apiResponse = await getTastyApiResponse(req,res,next)
+    if (apiResponse) {
+        return internalRecipeMapper(apiResponse)
+    }
+
 }
 
-router.get('/api/external/recipes/', async(req,res) => {
-    const response = await mappedRecipeListGenerator(req)
-    res.json(response)
+router.get('/api/external/recipes/', async(req,res,next) => {
+    const mappedRecipes = await mappedRecipeListGenerator(req,res,next)
+    if (mappedRecipes) {
+        res.json(mappedRecipes)
+    }
 })
 
 module.exports = router

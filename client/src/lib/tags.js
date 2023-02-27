@@ -2221,6 +2221,6 @@ const tags = {
   }
 
 
-const options = ["Vegetarian","Vegan","Pescatarian","Dairy Free","Gluten Free","Keto","Chinese","Japanese","Thai","Venezuelan","South African","French","Korean","Brazilian","Greek","Indian","Italian","Mexican","German","Middle Eastern","Hawaiian","Cuban","British","Vietnamese","Seafood","Low Carb","Healthy","Low Carb","High Protein","High Fiber"]
+const options = ["Vegetarian","Vegan","Pescatarian","Dairy Free","Gluten Free","Keto","Chinese","Japanese","Thai","Venezuelan","South African","French","Korean","Brazilian","Greek","Indian","Italian","Mexican","German","Middle Eastern","Hawaiian","Cuban","British","Vietnamese","Seafood","Healthy","Low Carb","High Protein","High Fiber","Under 15 Minutes","Under 30 Minutes","Under 45 Minutes","Under 1 Hour","5 Ingredients or Less","Easy"]
 
-module.exports = options
+export default options
