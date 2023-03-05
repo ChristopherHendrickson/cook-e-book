@@ -32,7 +32,6 @@ const getTastyApiResponse = async(req,res,next) => {
 
     const responseData = await fetch(url, options)
     const response = await responseData.json()
-    console.log(response)
     if (!response.results) { // api has bad error handling, error objects are returned with status 200 with inconsistent object keys. So assuming if there are no results it is an error. 
         res.status(400).json({message:'Bad Request'})
     } else {
@@ -95,7 +94,8 @@ const internalRecipeMapper = (recipeData) => {
             if (includedTagTypes.includes(tag.type) && !(timeTagAlreadyIncluded && tag.name.includes('under'))) {
                 extractedTags.push({
                     type:tag.type,
-                    name:tag.display_name
+                    display_name:tag.display_name,
+                    name:tag.name
                 })
             }
             if (tag.type == 'difficulty' && tag.name.includes('under')) {
@@ -119,6 +119,7 @@ const internalRecipeMapper = (recipeData) => {
             favourite:false,
             active:true,
             tags:extractTags(recipe),
+            totalPrepTime:recipe.total_time_minutes,
             numServings:recipe.num_servings,
             thumbnailURL:recipe.thumbnail_url
         }

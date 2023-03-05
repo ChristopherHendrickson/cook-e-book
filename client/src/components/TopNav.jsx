@@ -1,11 +1,12 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { useNavigate } from "react-router-dom"
-import { UserContext } from '../context/userContext'
+import { UserContext, } from '../context/userContext'
+import NavPoints from './NavPoints'
 
 
+const TopNav = ( {currentPage} ) => {
+    const [user, setUser] = useContext(UserContext)
 
-const TopNav = () => {
-    const [ user, setUser ] = useContext(UserContext)
     const navigate = useNavigate()
     const logout = async () => {
         await fetch('/api/auth/logout', {
@@ -15,11 +16,25 @@ const TopNav = () => {
         navigate('/login')
     }
 
+
+
+    const pages = ['Cookbook','Browse','Meal Plan','Shopping List']
+
     return ( 
+        <>
         <nav>
-            <p>logged in as {user?.username}</p>
-            <button onClick={logout}>Logout</button>
+            <div className='top-bar'>
+                <p>{user?.username}</p>
+                <button onClick={logout}>. Logout</button>
+            </div>
+            <NavPoints pages={pages} currentPage={currentPage}></NavPoints>
+
         </nav>
+
+        <div className='nav-dividor-container'>
+            <div className='nav-dividor-shape'></div>
+        </div>
+        </>
     )
   }
   

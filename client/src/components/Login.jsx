@@ -28,16 +28,21 @@ const Login = () => {
             },
             body: JSON.stringify(fields)
         })
-        const data = await res.json()
+
+        console.log(res.status)
         if (res.status === 200) {
+            const data = await res.json()
             setError(null)
             setUser(data)
-            navigate('/home')
+            navigate('/cookbook')
+        } else if (res.status !== 500) {
+            const data = await res.json()
             setError(data)
-        } else if (res.status === 200) {
-
+        } else {
+            setError({message:'Sorry, we are experiencing technical difficulties. We are working to resolve the issue as quickly as possible. Please try again later.'})
         }
     }
+
     return (
         <>    
         <form onSubmit={handleSubmit}>

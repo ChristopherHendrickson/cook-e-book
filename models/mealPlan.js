@@ -5,7 +5,7 @@ const recipeSchema = require('./recipeSchema')
 const MealPlanSchema = new Schema({
     created:Date,
     userID:{type:Schema.Types.ObjectId,  ref: "User", required:true},
-    recipes:[recipeSchema],
+    recipes:{},
     shoppingList:[{
         name:String,
         quantities:[{

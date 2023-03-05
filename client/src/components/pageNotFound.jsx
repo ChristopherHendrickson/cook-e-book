@@ -7,19 +7,15 @@ const PageNotFound = () => {
     const location = useLocation().pathname
 
     const navHome = () => {
-        navigate('/home')
+        navigate('/cookbook')
     }
-
-
-
-
-
+    
     return (
         <>
         {location == '/' ? 
-        <Navigate to='/home'/> : 
+        <Navigate to='/cookbook'/> : 
         <>
-            <p>Page not found @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@</p>
+            <p>Page not found </p>
             <button onClick={navHome}>Take Me Home</button>
         </>
         }

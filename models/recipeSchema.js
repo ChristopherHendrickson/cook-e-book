@@ -18,6 +18,8 @@ const componentSchema = new Schema({
 
 const recipeSchema = new Schema({
     name:{type:String, required:true},
+    created:Date,
+    lastUpdated:Date,
     apiID:Number,
     userID:{type:Schema.Types.ObjectId,  ref: "User", required:true},
     components:[componentSchema],
@@ -26,8 +28,10 @@ const recipeSchema = new Schema({
     active:{type:Boolean, required:true},
     tags:[{
         type:{type:String},
-        name:String
+        name:String,
+        display_name:String
     }],
+    totalPrepTime:Number,
     numServings:Number,
     thumbnailURL:String
 })

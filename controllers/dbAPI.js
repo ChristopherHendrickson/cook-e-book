@@ -44,6 +44,8 @@ router.post('/api/internal/recipes', authenticate, async (req,res,next)=>{
 
     const newRecipe = new Recipe(req.body)
     newRecipe.userID = req.user.id
+    newRecipe.created = new Date()
+    newRecipe.lastUpdated = new Date()
     const validationError = newRecipe.validateSync()
     if (validationError) {
         return next(validationError)
@@ -68,9 +70,12 @@ router.put('/api/internal/recipes/:id', authenticate, async(req,res,next) => {
         req.body._id = recipe._id
         req.body.userID = recipe.userID
         req.body.apiID = recipe.apiID
-
-        const updateResponse = await recipe.update({$set: req.body})
-        res.json(updateResponse)
+    
+        req.body.lastUpdated = new Date()
+        
+        await recipe.set(req.body)
+        await recipe.save()
+        res.json(recipe)
     } )
 })
 
@@ -93,7 +98,7 @@ router.delete('/api/internal/recipes/:id', authenticate, async (req,res,next) =>
 })
 
 router.get('/api/internal/mealplan', authenticate, async(req,res)=>{
-    // optional "count" and "skip" queries
+    // optional "count" and "skip" request queries
     // if no query is given the route defaults to return most recent meal plan, with count=1
     const userID = req.user.id
     const mealPlanData = await mealPlan
@@ -101,14 +106,13 @@ router.get('/api/internal/mealplan', authenticate, async(req,res)=>{
         .sort({ created: "desc" })
         .skip(req.query.skip || 0)
         .limit(req.query.count || 1)
-    console.log(mealPlanData.length)
     res.json(mealPlanData)
 })
 
 
 
 router.post('/api/internal/mealPlan', authenticate, async(req,res,next)=>{
-    //expects a list of recipes fitting the recipeSchema in the body of the http PUT request - {recipes: []}
+    //req. body to contain {recipes: {'monday':recipeSchema, 'tuesdayrecipeSchema,....}}
     const mealPlanDocumentLimit = 30
     const userID = req.user.id
     const newMealPlan = new mealPlan(req.body)
@@ -120,7 +124,13 @@ router.post('/api/internal/mealPlan', authenticate, async(req,res,next)=>{
         return next(validationError)
     } else {
         ShoppingListGenerator.generate(newMealPlan)
-        const resp = await newMealPlan.save()
+        let er = false
+        newMealPlan.save()
+            .catch((error)=>{
+                er = true
+                next(error)
+            })
+        if (er) {return}
 
         const documentCount = await mealPlan.countDocuments({ userID: userID })
         if (documentCount > mealPlanDocumentLimit) {
@@ -131,7 +141,7 @@ router.post('/api/internal/mealPlan', authenticate, async(req,res,next)=>{
           
             await mealPlan.deleteMany({ _id: { $in: documentsToDelete.map(doc => doc._id) } });
         }
-        res.json(newMealPlan)
+        res.json({mealplan:newMealPlan,message:'Your meal plan has been saved'})
     }
 })
 

@@ -5,14 +5,19 @@ const mongoDBSession = require('connect-mongodb-session')
 const passport = require('passport')
 const mongoose = require('mongoose')
 
+
+
+
 const { errorHandler } = require('./middlewares/errorHandlers')
 
 const User = require('./models/user')
 
 
+
 const tastyApi = require('./controllers/tastyAPI')
 const authApi = require('./controllers/auth')
 const dbApi = require('./controllers/dbAPI')
+const wakeAPI = require('./controllers/wakeAPI')
 
 const app = express()
 
@@ -25,6 +30,7 @@ const sessionStore = new mongoDBStore({
   uri:dbURL,
   collection:'sessions'
 })
+
 
 
 app.use(express.urlencoded({extended:true}))
@@ -51,6 +57,7 @@ passport.deserializeUser(User.deserializeUser())
 app.use(tastyApi)
 app.use(authApi)
 app.use(dbApi)
+app.use(wakeAPI)
 app.use(errorHandler)
 
 mongoose.connect(dbURL, ()=>{
