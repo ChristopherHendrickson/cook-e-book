@@ -39,24 +39,26 @@ const Login = () => {
             const data = await res.json()
             setError(data)
         } else {
-            setError({message:'Sorry, we are experiencing technical difficulties. We are working to resolve the issue as quickly as possible. Please try again later.'})
+            setError({message:'Sorry, we are experiencing technical difficulties. Please try again later.'})
         }
     }
 
     return (
-        <>    
-        <form onSubmit={handleSubmit}>
-            { error && <p>{error.message}</p> }
-            <label htmlFor="login-username">Name</label>
-            <input name="username" type="text" onChange={handleChange} id="login-username" value={fields.username}/>
-            <br/>
-            <label htmlFor="login-password">Password</label>
-            <input name="password" type="password" onChange={handleChange} id="login-password" value={fields.password}/>
-            <br/>
-            <input type='submit' value='Log in'></input>
-        </form>
-    <p>Or</p><button onClick={()=>{navigate('/register')}}>Register</button>
-    </>
+        <div className='lander-page'>
+            <div className='lander-panel'>
+                <h2>Log in to your account</h2>
+                <form className='lander-form' onSubmit={handleSubmit}>
+                    { error && <p>{error.message}</p> }
+                    <label htmlFor="login-username">Name</label>
+                    <input className='input-text' name="username" type="text" onChange={handleChange} id="login-username" value={fields.username}/>
+                    <label htmlFor="login-password">Password</label>
+                    <input className='input-text' name="password" type="password" onChange={handleChange} id="login-password" value={fields.password}/>
+                    <input className='btn-default' type='submit' value='Log in'></input>
+                </form>
+                <p>Haven't signed up?</p>
+                <button className='btn-default' onClick={()=>{navigate('/register')}}>Create an Account</button>
+            </div>
+        </div>
 
     )
 

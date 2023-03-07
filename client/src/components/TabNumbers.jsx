@@ -23,14 +23,14 @@ const TabNumbers = ({ moreData, viewFrom, setViewFrom, highestLoadedFrom, handle
     return (
         <>
         {Number.isInteger(highestLoadedFrom) && 
-        <table>
+        <table className='tab-numbers'>
             <tbody>
             <tr>
                 {pageNumbers.map((page)=>{
                     const isCurrent = (page-1)*15 == viewFrom
                     return (
-                    <td key={`page${page}`} className={isCurrent ? "tab-button-current" : "tab-button"} >
-                        <button disabled={isCurrent} onClick={
+                    <td key={`page${page}`}  >
+                        <button className={isCurrent ? "tab-button current" : "tab-button"} disabled={isCurrent} onClick={
                             ()=>{
                                 setViewFrom((page-1)*15)
                                 setTimeout(()=>{
@@ -47,14 +47,13 @@ const TabNumbers = ({ moreData, viewFrom, setViewFrom, highestLoadedFrom, handle
                 {moreData &&
                 <>
                 <td>
-                    <button id={'load-more'} onClick={
+                    <button className='tab-button' id={'load-more'} onClick={
                         (event)=>{
                                 handleSubmit(event,viewFrom+15)
                                 window.scrollTo({top: 0, left: 0, behavior: 'smooth'})
 
                             }
-                        }>{'>'}
-                    </button>
+                        }>{'>'}</button>
                 </td>
                 </>
                 }

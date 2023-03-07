@@ -21,6 +21,7 @@ const FavouriteButton = ({ displayRecipe, savedRecipes, setSavedRecipes, setDisp
             newSavedRecipes.push(updatedRecipe)
             newSavedRecipes.sort((a, b) => new Date(a.created) - new Date(b.created))
             setSavedRecipes(newSavedRecipes)
+
         }
     }
 

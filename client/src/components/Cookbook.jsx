@@ -11,28 +11,37 @@ import RecipeDetails from './RecipeDetails'
 import tagOptions from '../lib/tags'
 import DropDown from './DropDown'
 import Tags from './Tags'
+import BackToTop from './BackToTop'
+import LoaderThumbsRecipeThumb from './LoaderThumbsRecipeThumb'
+import RemoveRecipeButton from './RemoveRecipeButton'
+
 
 const Cookbook = () => {
     const [savedRecipes, setSavedRecipes] = useContext(SavedRecipesContext)
     const [displayRecipe,setDisplayRecipe] = useState(null)
     const [filteredRecipes, setFilteredRecipes] = useState(savedRecipes)
     const [filterTags,setFilterTags] = useState([])
-    const [filterbyFavourites,setFilterByFavourites] = useState(false)
-
-    const filterByTags = () => {
-        if (filterTags.length > 0 || filterbyFavourites) {
-            const filtered = savedRecipes.filter((recipe)=>{
+    const [filterByFavourites,setFilterByFavourites] = useState(false)
+    console.log(savedRecipes)
+    
+    const filterRecipes = () => {
+        if (savedRecipes) {
+        if (filterTags.length > 0 || filterByFavourites) {
+            const filtered = [...savedRecipes].filter((recipe)=>{
                 const recipeTagNames = recipe.tags.map((tag)=>tag.name)
                 const tagTest = filterTags.every((filter)=>{
                     return recipeTagNames.includes(filter.name)
                 })
-                const favTest = filterbyFavourites ? recipe.favourite : true 
+                const favTest = filterByFavourites ? recipe.favourite : true 
                 return tagTest && favTest
             })
             setFilteredRecipes(filtered)
         } else {
             setFilteredRecipes([...savedRecipes])
 
+        }
+        } else {
+            setFilteredRecipes(null)
         }
     }
 
@@ -54,12 +63,12 @@ const Cookbook = () => {
     }
 
     const handleFilterFavouriteToggle = () => {
-        setFilterByFavourites(!filterbyFavourites)
+        setFilterByFavourites(!filterByFavourites)
     }
 
     useEffect(()=>{
-        filterByTags(filterTags)
-    },[savedRecipes,filterTags,filterbyFavourites])
+        filterRecipes()
+    },[savedRecipes,filterTags,filterByFavourites])
     
 
 
@@ -68,13 +77,22 @@ const Cookbook = () => {
             <TopNav currentPage={'Cookbook'}/>
             <div className='page-content cookbook'>
                 <h1>My Cookbook</h1>
-            
-                <DropDown title={'Filter'}>
+                <DropDown 
+                    title='Filters'
+                    size='lg'
+                    >
                     <Tags tags={tagOptions} selectedTags={filterTags} onClick={handleFilterTagToggle}></Tags>
-                    <span onClick={handleFilterFavouriteToggle} className={`favourite-button${filterbyFavourites ? ' favourited' : ''}`}></span>
+                    <span onClick={handleFilterFavouriteToggle} className={`favourite-button${filterByFavourites ? ' favourited' : ''}`}></span>
                 </DropDown>
-                
-                <RecipeThumbList recipes={filteredRecipes} setDisplayRecipe={setDisplayRecipe}></RecipeThumbList>
+                {savedRecipes ?
+                    savedRecipes.length>0 ? 
+                        <RecipeThumbList recipes={filteredRecipes} setDisplayRecipe={setDisplayRecipe}></RecipeThumbList>
+                        :
+                        <div>No recipes saved. Browse for some new ideas or add your own.</div>
+                    :
+                    <LoaderThumbsRecipeThumb count={2}/>
+
+                }    
                 <Recipe 
                     recipe={displayRecipe}
                     handleClose={() => setDisplayRecipe(null)}
@@ -84,11 +102,14 @@ const Cookbook = () => {
                         <FavouriteButton displayRecipe={displayRecipe} savedRecipes={savedRecipes} setSavedRecipes={setSavedRecipes} setDisplayRecipe={setDisplayRecipe}></FavouriteButton>
                         </>
                     }
-                    footer={null}
+                    footer={<RemoveRecipeButton recipe={displayRecipe} onClick={()=>setDisplayRecipe(null)}></RemoveRecipeButton>}
                     >
                     
                 </Recipe>
+            <BackToTop/>
+
             </div>
+
         </Loader>
 
     )

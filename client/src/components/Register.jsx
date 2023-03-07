@@ -39,22 +39,25 @@ const Register = () => {
         }
     }
     return (
-    <form onSubmit={handleSubmit}>
-        { error && <p>{error.message}</p> }
-        <div>
-            <label htmlFor="register-username">Name</label>
-            <input name="username" type="text" onChange={handleChange} id="register-username" value={fields.username}/>
+        <div className='lander-page'>
+            <div className='lander-panel'>
+                <h2>Create your account</h2>
+                <form className='lander-form' onSubmit={handleSubmit}>
+                    { error && <p>{error.message}</p> }
+
+                    <label htmlFor="register-username">Name</label>
+                    <input className='input-text' name="username" type="text" onChange={handleChange} id="register-username" value={fields.username}/>
+                    <label htmlFor="register-password">Password</label>
+                    <input className='input-text' name="password" type="password" onChange={handleChange} id="register-password" value={fields.password}/>
+                    <label htmlFor="register-confirmPassword">Confirm Password</label>
+                    <input className='input-text' name="confirmPassword" type="password" onChange={handleChange} id="register-confirmPassword" value={fields.confirmPassword}/>
+                    <input className='btn-default' type='submit' value='Register'></input>
+                </form>
+                <span>Have an account?</span>
+                <button className='btn-default' onClick={()=>{navigate('/login')}}>Log in</button>
+            </div>  
         </div>
-        <div>
-            <label htmlFor="register-password">Password</label>
-            <input name="password" type="password" onChange={handleChange} id="register-password" value={fields.password}/>
-        </div>
-        <div>
-            <label htmlFor="register-confirmPassword">Confirm Password</label>
-            <input name="confirmPassword" type="password" onChange={handleChange} id="register-confirmPassword" value={fields.confirmPassword}/>
-        </div>
-        <input type='submit' value='Register'></input>
-    </form>
+    
     )
 
   }

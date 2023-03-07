@@ -11,6 +11,8 @@ import Loader from './components/Loader'
 import Browse from './components/Browse'
 import MealPlan from './components/Mealplan'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import ShoppingList from './components/ShoppingList'
+import BackToTop from './components/BackToTop'
 
 function App() {
 
@@ -41,7 +43,7 @@ function App() {
           <Route path = '/cookbook' element={<PrivateRoute userFetched={userFetched}><Cookbook/></PrivateRoute>} />
           <Route path = '/browse' element={<PrivateRoute userFetched={userFetched}><Browse/></PrivateRoute>} />
           <Route path = '/mealplan' element={<PrivateRoute userFetched={userFetched}><MealPlan/></PrivateRoute>} />
-          <Route path = '/shoppinglist' element={<PrivateRoute userFetched={userFetched}><Cookbook/></PrivateRoute>} /> 
+          <Route path = '/shoppinglist' element={<PrivateRoute userFetched={userFetched}><ShoppingList/></PrivateRoute>} /> 
           <Route path="*" element={<PageNotFound/>} /> 
         </Routes>
         </div>

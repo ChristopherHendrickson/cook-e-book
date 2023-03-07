@@ -1,19 +1,20 @@
 
 
-const DaySelector = ({ selectedDays, setSelectedDays }) => {
+const DaySelector = ({ selectedDays, setSelectedDays, handleSingleUpdate }) => {
     const daysOfTheWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
     const handleSelect = (day) => {
         const newSelectedDays = [...selectedDays]
-        console.log('click')
         if (selectedDays.includes(day)) {
             newSelectedDays.splice(newSelectedDays.indexOf(day), 1);
+            handleSingleUpdate(day,true)
         } else {
             newSelectedDays.push(day)
+            handleSingleUpdate(day,false)
         }
-        console.log(newSelectedDays)
         setSelectedDays(newSelectedDays)
     }
+    
     return (
         <ul className='d-sel'>
         {daysOfTheWeek.map((day)=>{

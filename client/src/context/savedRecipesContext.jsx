@@ -6,7 +6,7 @@ export const SavedRecipesContext = React.createContext()
 export const SavedRecipeProvider = ( { children } ) => {
     
     const [user, setUser] = useContext(UserContext)
-    const [savedRecipes,setSavedRecipes] = useState([])
+    const [savedRecipes,setSavedRecipes] = useState(null)
     
     useEffect(() => {
         const getRecipes = async () => {

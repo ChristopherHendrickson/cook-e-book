@@ -1,11 +1,20 @@
 import Button from 'react-bootstrap/Button'
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { SavedRecipesContext } from '../context/savedRecipesContext'
 
 const SaveRecipeButton = ({ recipe }) => {
     const [savedRecipes, setSavedRecipes] = useContext(SavedRecipesContext)
     const [buttonText,setButtonText] = useState('Save Recipe')
     const [buttonDisable,setButtonDisable] = useState(false)
+
+    useEffect(()=>{
+        const recipeAlreadySaved = savedRecipes.find((r)=>r.apiID==recipe.apiID)
+        if (recipeAlreadySaved) {
+            setButtonDisable(true)
+            setButtonText('Saved ✓')
+        }
+    },[savedRecipes])
+
 
     const handleClick = async () => {
         setButtonText('Saving...')

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const DropDown = ({ children, title }) => {
+const DropDown = ({ children, title, size }) => {
     
     const [showComponent,setShowComponent] = useState(false)
 
@@ -9,8 +9,8 @@ const DropDown = ({ children, title }) => {
     }
 
     return (
-        <div className={`drop-down${showComponent ? ' shown' : ''}`}>
-            <button className={`drop-down-btn${showComponent ? ' shown' : ''}`} onClick={toggleReveal}>{title}</button>
+        <div className={`drop-down ${size}${showComponent ? ' shown' : ''}`}>
+            <button className={`drop-down-btn${showComponent ? ' shown' : ''}`} onClick={toggleReveal}><span>{title}</span><span className='dropdown-icon'></span></button>
             {showComponent &&
                 <div className='drop-down-content'>
                     {children}
