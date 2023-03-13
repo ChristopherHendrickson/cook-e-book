@@ -36,11 +36,9 @@ const sessionStore = new mongoDBStore({
 
 
 app.use(express.static(path.join(__dirname, "client", "dist")));
-app.use(express.static('public')) //looking for static files in public folder
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 
-app.use(express.static('public'))
 app.use(express.urlencoded({extended:true}))
 app.use(session({
     secret: process.env.SESSION_SECRET,
