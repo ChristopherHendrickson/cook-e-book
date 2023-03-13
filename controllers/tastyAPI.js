@@ -33,12 +33,24 @@ const getTastyApiResponse = async(req,res,next) => {
     if (responseData.status==200) {
         const response = await responseData.json()
         if (!response.results) { // api has bad error handling, error objects are returned with status 200 with inconsistent object keys. So assuming if there are no results it is an error. 
-            res.status(400).json({message:'Bad Request'})
+            return {
+                status:400,
+                data:null,
+                message:'Bad Request'
+            } 
         } else {
-            return response.results
-        } 
+            return {
+                status:200,
+                data:response.results,
+                message:'success'
+            } 
+        }
     } else {
-        res.status(400).json({message:'External API Error'})
+        return {
+            status:500,
+            data:null,
+            message:'External API Error'
+        } 
     }
 
     
@@ -129,16 +141,17 @@ const internalRecipeMapper = (recipeData) => {
 
 const mappedRecipeListGenerator = async(req,res,next) => {
     const apiResponse = await getTastyApiResponse(req,res,next)
-    if (apiResponse) {
-        return internalRecipeMapper(apiResponse)
-    }
+    return internalRecipeMapper(apiResponse)
+
 
 }
 
 router.get('/api/external/recipes/', async(req,res,next) => {
-    const mappedRecipes = await mappedRecipeListGenerator(req,res,next)
-    if (mappedRecipes) {
-        res.json(mappedRecipes)
+    const response = await mappedRecipeListGenerator(req,res,next)
+    if (response.status==200) {
+        res.json(response.data)
+    } else {
+        res.status(response.status).json(response.message)
     }
 })
 
