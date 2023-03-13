@@ -28,21 +28,21 @@ const getTastyApiResponse = async(req,res,next) => {
             'X-RapidAPI-Host': X_RapidAPI_Host
             }
     };
-    console.log(url)
     const responseData = await fetch(url, options)
+
     if (responseData.status==200) {
         const response = await responseData.json()
-        if (!response.results) { // api has bad error handling, error objects are returned with status 200 with inconsistent object keys. So assuming if there are no results it is an error. 
-            return {
-                status:400,
-                data:null,
-                message:'Bad Request'
-            } 
-        } else {
+        if (response.results) { // api has bad error handling, error objects are returned with status 200 with inconsistent object keys. So assuming if there are no results it is an error. 
             return {
                 status:200,
                 data:response.results,
                 message:'success'
+            } 
+        } else {
+            return {
+                status:400,
+                data:null,
+                message:'Bad Request'
             } 
         }
     } else {
@@ -141,7 +141,17 @@ const internalRecipeMapper = (recipeData) => {
 
 const mappedRecipeListGenerator = async(req,res,next) => {
     const apiResponse = await getTastyApiResponse(req,res,next)
-    return internalRecipeMapper(apiResponse)
+    if (apiResponse.status==200) {
+        const mappedRecipes = internalRecipeMapper(apiResponse.data)
+        return {
+            status:200,
+            data:mappedRecipes,
+            message:'Success'
+        }
+    } else {
+        return apiResponse
+    }
+
 
 
 }
