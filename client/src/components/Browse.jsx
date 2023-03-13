@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { UserContext } from '../context/userContext'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import tagOptions from '../lib/tags'
 
 import Form from 'react-bootstrap/Form';    
 
-import tagOptions from '../lib/tags'
 
 import RecipeDetails from './RecipeDetails'
 import TabNumbers from './TabNumbers'
@@ -34,6 +34,7 @@ const Browse = () => {
     const handleChange = (event) => {
         const { name, value } = event.target
         setFields({
+            ...fields,
           [name]: value
         })
     }
@@ -131,7 +132,7 @@ const Browse = () => {
                 <Tags tags={tagOptions} selectedTags={filterTags} onClick={handleFilterTagToggle}></Tags>
             </DropDown>
             <Form className='browse-form' onSubmit={(event)=>{handleSubmit(event,0)}}>
-                <input className='input-text' name="query" type="text" onChange={handleChange} id="query" value={fields.query} autoComplete="off" placeholder="Optional search term"/>
+                <input className='input-text marg-10' name="query" type="text" onChange={handleChange} id="query" value={fields.query} autoComplete="off" placeholder="Optional search term"/>
                 <input className='btn-default' type='submit' value='Find Recipes'></input>
             </Form>
             {requestPending ? 
@@ -149,7 +150,7 @@ const Browse = () => {
                 
             </Recipe>
             <ToastContainer
-                position="bottom-left"
+                position="bottom-center"
                 autoClose={3000}
                 hideProgressBar
                 newestOnTop

@@ -40,7 +40,7 @@ const SaveRecipeButton = ({ recipe }) => {
 
     }
     return (
-        <Button disabled={buttonDisable} onClick={handleClick}>{buttonText}</Button>
+        <button className='btn-default' disabled={buttonDisable} onClick={handleClick}>{buttonText}</button>
     )
 }
 

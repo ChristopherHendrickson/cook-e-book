@@ -7,7 +7,7 @@ const Loader = ({ children }) => {
 
     if (!user) {
         return (
-                <TopNav/>
+                <></>
         )
     } else {
         return children

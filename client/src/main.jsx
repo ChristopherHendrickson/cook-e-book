@@ -6,6 +6,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { UserProvider } from './context/userContext'
 import { SavedRecipeProvider } from './context/savedRecipesContext'
 import { MealplanProvider } from './context/MealplanContext'
+import { CustomTagsProvider } from './context/CustomTagsContext'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -15,7 +16,9 @@ root.render(
       <UserProvider>
         <SavedRecipeProvider>
           <MealplanProvider>
-			      <App/>
+            <CustomTagsProvider>
+			        <App/>
+            </CustomTagsProvider>
           </MealplanProvider>
         </SavedRecipeProvider>
       </UserProvider>

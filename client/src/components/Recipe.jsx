@@ -5,13 +5,12 @@ import Ingredients from './Ingredients'
 import Instructions from './Instructions'
 
 const Recipe = ({ recipe, handleClose, header, footer } ) => {
-    
     if (!recipe) {
         return 
     }
     return (
         <Modal 
-            show={!!recipe}
+            show={recipe}
             onHide={handleClose}
             size="xl"
             >
@@ -22,30 +21,35 @@ const Recipe = ({ recipe, handleClose, header, footer } ) => {
             
             </Modal.Header >
             <Modal.Body>
-                <div className='top'>
+                <div className='modal-top'>
                     {header}
                 </div>
-                <div className='recipe-main'>
-
-                    <div className='left'>
-                        <img src={recipe.thumbnailURL}></img>
-                    </div>
-                    <div className='right'>
+                <div className='modal-main'>
+                    {recipe.thumbnailURL && 
+                        <div className='modal-main-left'>
+                            <img src={recipe.thumbnailURL}></img>
+                        </div>
+                    }
+                    <div className='modal-main-right'>
                         <Ingredients recipe={recipe}/>
                         <Tags tags={recipe.tags}></Tags>
 
                     </div>
 
                 </div>
-                <div className='bottom'>
-                        <Instructions recipe={recipe}></Instructions>
-                    </div>
+                <div className='modal-bottom padded'>
+                    <Instructions recipe={recipe}></Instructions>
+                </div>
             </Modal.Body>
             <Modal.Footer>
-                {footer}
-            <Button variant="secondary" onClick={handleClose}>
-                Close
-            </Button>
+            <div className='modal-foot'>
+                <div className='modal-foot-injects'>
+                    {footer}
+                </div>
+                <button className="btn-default" onClick={handleClose}>
+                    Close
+                </button>
+            </div>
             </Modal.Footer>
         </Modal>
     )

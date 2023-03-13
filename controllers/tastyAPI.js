@@ -47,17 +47,9 @@ const internalRecipeMapper = (recipeData) => {
         const exrtactedComponents = []
         recipe.sections.forEach((section)=>{
             section.components.forEach((component)=>{
-                let measurementObject = component.measurements.filter((measurement)=>{
-                    return measurement.unit.system == 'metric' 
-                })[0] 
-
-                if (!measurementObject) {
-                    measurementObject = component.measurements[0] 
-                    if(!measurementObject) { console.log(recipe.id)}
-                }
-
+    
+                const measurementObject = component.measurements[0] 
                 
-
                 exrtactedComponents.push({
                     raw_text:component.raw_text,
                     ingredient:{

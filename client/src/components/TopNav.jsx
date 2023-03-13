@@ -44,7 +44,7 @@ const TopNav = ( {currentPage} ) => {
                 <div className='nav-user' >{user?.username}<span id='acc-nav-d' className='dropdown-icon white'></span></div>
                 <div className='popup-container'>
                     <div className={`popup under left${popupVis ? ' show' : ''}`}>
-                        <button className='btn-list' onClick={logout} >Logout</button>
+                        <button className='btn-list' onClick={logout}>Logout</button>
                     </div>
                 </div>
             </div>

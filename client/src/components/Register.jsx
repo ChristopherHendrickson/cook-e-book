@@ -46,11 +46,11 @@ const Register = () => {
                     { error && <p>{error.message}</p> }
 
                     <label htmlFor="register-username">Name</label>
-                    <input className='input-text' name="username" type="text" onChange={handleChange} id="register-username" value={fields.username}/>
+                    <input className='input-text marg-10' name="username" type="text" onChange={handleChange} id="register-username" value={fields.username}/>
                     <label htmlFor="register-password">Password</label>
-                    <input className='input-text' name="password" type="password" onChange={handleChange} id="register-password" value={fields.password}/>
+                    <input className='input-text marg-10' name="password" type="password" onChange={handleChange} id="register-password" value={fields.password}/>
                     <label htmlFor="register-confirmPassword">Confirm Password</label>
-                    <input className='input-text' name="confirmPassword" type="password" onChange={handleChange} id="register-confirmPassword" value={fields.confirmPassword}/>
+                    <input className='input-text marg-10' name="confirmPassword" type="password" onChange={handleChange} id="register-confirmPassword" value={fields.confirmPassword}/>
                     <input className='btn-default' type='submit' value='Register'></input>
                 </form>
                 <span>Have an account?</span>

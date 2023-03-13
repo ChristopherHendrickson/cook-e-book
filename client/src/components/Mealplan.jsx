@@ -3,7 +3,6 @@ import { MealplanContext } from '../context/MealplanContext'
 import { SavedRecipesContext } from '../context/savedRecipesContext'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import tagOptions from '../lib/tags'
 
 import TopNav from './TopNav'
 import Loader from './Loader'
@@ -23,6 +22,7 @@ daysOfTheWeek.forEach((day)=>{
 })
 
 let mealplanAlreadyRecieved = false
+let toastCooldown = false
 
 const MealPlan = () => {
 
@@ -68,7 +68,7 @@ const MealPlan = () => {
                 const data = await res.json()
                 setMealplan(data.mealplan)
                 setMealplanSavedState(data.mealplan)
-                toast.success(data.message)
+                toast.success('Meal plan saved')
                 setMealplanUpdated(false)
             } else {
                 const error = await res.json()
@@ -89,8 +89,12 @@ const MealPlan = () => {
     const handleAllRandom = () => {
         const newRecipes = {...mealplanRecipeTemplate}
         if (filteredRecipes.length == 0) {
-            console.log('setting')
-            toast.info('No recipes match the given Filters')
+            if (!toastCooldown) {
+                toastCooldown=true
+                setTimeout(()=>{toastCooldown=false},3000)
+                toast.info('No recipes match the given Filters')
+            }
+
             return
         }
         selectedDays.forEach((day)=>{
@@ -109,7 +113,11 @@ const MealPlan = () => {
             newRecipes[day] = null
         } else {
             if (filteredRecipes.length == 0) {
-                toast.info('No recipes match the given Filters')
+                if (!toastCooldown) {
+                    toastCooldown=true
+                    setTimeout(()=>{toastCooldown=false},3000)
+                    toast.info('No recipes match the given Filters')
+                }
                 return
             }
             newRecipes[day] = filteredRecipes[Math.floor(Math.random()*filteredRecipes.length)]
@@ -178,25 +186,36 @@ const MealPlan = () => {
         <Loader>
             <TopNav currentPage={'Meal Plan'}/>
             <div className='page-content meal-plan'>
-                <h1>My  Meal Plan</h1>
-                <DropDown 
-                    title='Filters'
-                    size='lg'
-                    >
-                    <Tags tags={tagOptions} selectedTags={filterTags} onClick={handleFilterTagToggle}></Tags>
-                    <span onClick={handleFilterFavouriteToggle} className={`favourite-button${filterByFavourites ? ' favourited' : ''}`}></span>
-                </DropDown>
-                <DropDown 
-                    title='Days'
-                    size='sm'
-                    >
-                    <DaySelector selectedDays={selectedDays} setSelectedDays={setSelectedDays} handleSingleUpdate={handleSingleUpdate}></DaySelector>
-                </DropDown>
+                <h1>My Meal Plan</h1>
+                {savedRecipes.length > 0 ? 
+                <>
+                    <DropDown 
+                        title='Filters'
+                        size='lg'
+                        >
+                        <Tags selectedTags={filterTags} onClick={handleFilterTagToggle}></Tags>
+                        <span onClick={handleFilterFavouriteToggle} className={`favourite-button${filterByFavourites ? ' favourited' : ''}`}></span>
+                    </DropDown>
+                    <DropDown 
+                        title='Days'
+                        size='sm'
+                        >
+                        <DaySelector selectedDays={selectedDays} setSelectedDays={setSelectedDays} handleSingleUpdate={handleSingleUpdate}></DaySelector>
+                    </DropDown>
+                
+                    {mealplanUpdated &&
+                        <p>Remember to <span className='clickable' onClick={handleSave}>save your changes</span></p>
+                    }
 
-                <MealplanDisplay mealplan={mealplan} handleAllRandom={handleAllRandom} handleSingleUpdate={handleSingleUpdate} handleManualSelectRecipeForDay={handleManualSelectRecipeForDay} setDisplayRecipe={setDisplayRecipe} selectedDays={selectedDays}></MealplanDisplay>
-                <button className='btn-default' disabled={!mealplanUpdated} onClick={handleUndo}>Undo Changes</button>
-                <button className='btn-default' disabled={!mealplanUpdated} onClick={handleSave}>Save Changes</button>
+                    <MealplanDisplay mealplan={mealplan} handleAllRandom={handleAllRandom} handleSingleUpdate={handleSingleUpdate} handleManualSelectRecipeForDay={handleManualSelectRecipeForDay} setDisplayRecipe={setDisplayRecipe} selectedDays={selectedDays}></MealplanDisplay>
+                    <button className='btn-default' disabled={!mealplanUpdated} onClick={handleSave}>Save Changes</button>
+                    <button className='btn-default' disabled={!mealplanUpdated} onClick={handleUndo}>Undo Changes</button>
+                </>
+                    :
+                    <p>No recipes saved. Browse for some new ideas or add your own.</p>
+                }
             </div>
+
             <Recipe 
                 recipe={displayRecipe}
                 handleClose={() => setDisplayRecipe(null)}
@@ -205,7 +224,7 @@ const MealPlan = () => {
                 >
             </Recipe>
             <ToastContainer
-                position="bottom-left"
+                position="bottom-center"
                 autoClose={3000}
                 hideProgressBar
                 newestOnTop

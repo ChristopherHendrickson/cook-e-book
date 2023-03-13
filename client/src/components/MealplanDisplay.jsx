@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import SavedRecipeList from './SavedRecipeList'
 import LoaderThumbsMealPlan from './LoaderThumbsMealPlan'
+import RecipeThumb from './RecipeThumb'
 
 import New from '../assets/new.png'
 import Pick from '../assets/pick.png'
@@ -30,19 +31,20 @@ const MealplanDisplay = ({ mealplan, handleAllRandom, handleSingleUpdate, handle
                     <li className='meal-plan-day' key={`meal-${day}`}>
                         <div className='mp-1'>
                             <div className='day-title'>{day}</div>
-                            <div className='day-servings'>{mealplan.recipes[day]?.numServings && mealplan.recipes[day]?.numServings + ' Servings'}</div>
-                        </div>
-                        {selectedDays.includes(day) ?
-                        <div className='mp-2'>
-                            {mealplan.recipes[day] ? 
-                                <h4 className='meal-title' onClick={()=>setDisplayRecipe(mealplan.recipes[day])}>{mealplan.recipes[day].name}</h4>
-                                :
-                                <div className='meal-title removed'></div>
-                            }
                             <div className='meal-plan-btns-container'>
                                 <button className='btn-icon sm' onClick={()=>handleSingleUpdate(day,false)}><img className='btn-icon-content' src={New}></img></button>
                                 <button className='btn-icon sm' onClick={()=>setSelectingForDay(day)}><img className='btn-icon-content' src={Pick}></img></button>
                             </div>
+                        </div>
+                        {selectedDays.includes(day) ?
+                        <div className='mp-2'>
+                            {mealplan.recipes[day] ?
+                            <ul>
+                            <RecipeThumb recipe={mealplan.recipes[day]} setDisplayRecipe={setDisplayRecipe}></RecipeThumb>
+                            </ul>
+                            :
+                            <div className='deselect'>Nothing to show</div>
+                            }
                         </div>
                         :
                         <div className='mp-2 deselect'>No meal for {day}</div>

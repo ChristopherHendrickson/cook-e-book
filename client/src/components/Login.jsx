@@ -50,12 +50,12 @@ const Login = () => {
                 <form className='lander-form' onSubmit={handleSubmit}>
                     { error && <p>{error.message}</p> }
                     <label htmlFor="login-username">Name</label>
-                    <input className='input-text' name="username" type="text" onChange={handleChange} id="login-username" value={fields.username}/>
+                    <input className='input-text marg-10' name="username" type="text" onChange={handleChange} id="login-username" value={fields.username}/>
                     <label htmlFor="login-password">Password</label>
-                    <input className='input-text' name="password" type="password" onChange={handleChange} id="login-password" value={fields.password}/>
+                    <input className='input-text marg-10' name="password" type="password" onChange={handleChange} id="login-password" value={fields.password}/>
                     <input className='btn-default' type='submit' value='Log in'></input>
                 </form>
-                <p>Haven't signed up?</p>
+                <p>Haven't signed up yet?</p>
                 <button className='btn-default' onClick={()=>{navigate('/register')}}>Create an Account</button>
             </div>
         </div>

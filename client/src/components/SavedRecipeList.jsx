@@ -5,7 +5,7 @@ import { SavedRecipesContext } from '../context/savedRecipesContext'
 import Remove from '../assets/remove.png'
 
 const SavedRecipeList = ({ handleClick, title }) => {
-
+    //pop up used for selecting a recipe to add to the a mealplan
     const [savedRecipes, setSavedRecipes] = useContext(SavedRecipesContext)
     const [orderedRecipes,setOrderedRecipes] = useState([])
     
@@ -22,9 +22,9 @@ const SavedRecipeList = ({ handleClick, title }) => {
     useEffect(()=>{
         const sorted = [...savedRecipes]
         sorted.sort((a,b)=>{
-            if (a.name>b.name) {
+            if (a.name.toLowerCase()>b.name.toLowerCase()) {
                 return 1
-            } else if (a.name<b.name) {
+            } else if (a.name.toLowerCase()<b.name.toLowerCase()) {
                 return -1
             }
             return 0
@@ -35,7 +35,6 @@ const SavedRecipeList = ({ handleClick, title }) => {
     useEffect(()=>{
         addSelfDestructingEventListener(window,'click',()=>{
             handleClick(null)
-            console.log('aa')
         })
     },[])
 

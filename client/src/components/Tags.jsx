@@ -1,9 +1,16 @@
-
+import { useContext } from "react"
+import { CustomTagsContext } from "../context/CustomTagsContext"
 
 const Tags = ({ tags, selectedTags, onClick }) => {
 
+    const [customTags,setCustomTags] = useContext(CustomTagsContext)
+
+    if (!tags) {
+        tags = customTags //tags rendered from filter dropdowns do no specify tags
+    }
+
     if (!selectedTags) {
-        selectedTags=[...tags]
+        selectedTags=[...tags] //this colours in tags in the recipe displays by default
     }
 
     const selectedTagsNames = selectedTags.map((tag) =>{
