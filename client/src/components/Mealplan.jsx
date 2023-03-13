@@ -187,7 +187,7 @@ const MealPlan = () => {
             <TopNav currentPage={'Meal Plan'}/>
             <div className='page-content meal-plan'>
                 <h1>My Meal Plan</h1>
-                {savedRecipes.length > 0 ? 
+                {savedRecipes?.length <= 0 ? <p>No recipes saved. Browse for some new ideas or add your own.</p> :
                 <>
                     <DropDown 
                         title='Filters'
@@ -211,8 +211,7 @@ const MealPlan = () => {
                     <button className='btn-default' disabled={!mealplanUpdated} onClick={handleSave}>Save Changes</button>
                     <button className='btn-default' disabled={!mealplanUpdated} onClick={handleUndo}>Undo Changes</button>
                 </>
-                    :
-                    <p>No recipes saved. Browse for some new ideas or add your own.</p>
+
                 }
             </div>
 

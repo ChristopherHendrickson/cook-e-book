@@ -314,6 +314,8 @@ ul {
     align-items: center;
     flex-direction: column;
     margin:0;
+    margin-top:20px;
+
     padding:0 5px;
 }
 
@@ -761,14 +763,13 @@ h1 {
 
 
 .meal-plan-ui {
-    width:fit-content;
     margin-top:20px;
 }
 
 .meal-plan-day {
     text-align: left;
     width:100%;
-    max-width:800px;
+    max-width: 400px;
     min-width: 300px;
     display: flex;
     flex-direction: column;
@@ -798,7 +799,7 @@ h1 {
     justify-content: space-between;
     border-bottom: 1px solid  rgb(0,0,0,0.2);
     margin: 0 20px 9px 20px;
-    z-index:1
+    z-index:1;
 }
 
 .day-title {

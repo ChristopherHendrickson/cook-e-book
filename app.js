@@ -60,6 +60,12 @@ app.use(dbApi)
 app.use(wakeAPI)
 app.use(errorHandler)
 
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
+
+
+
 mongoose.connect(dbURL, ()=>{
   console.log('connected to database')
 })
