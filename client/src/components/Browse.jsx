@@ -116,7 +116,6 @@ const Browse = () => {
         if (!removed) {
             filteredTags.push(tag)
         }
-        console.log(filteredTags)
         setFilterTags(filteredTags)
     }
 

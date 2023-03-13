@@ -29,7 +29,6 @@ const Login = () => {
             body: JSON.stringify(fields)
         })
 
-        console.log(res.status)
         if (res.status === 200) {
             const data = await res.json()
             setError(null)

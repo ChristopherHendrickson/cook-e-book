@@ -2227,9 +2227,6 @@ const exp = options.map((opt)=>{
   const ret = tags['results'].find((tag)=>{
     return tag.display_name==opt
   })
-  if (!ret) {
-    console.log(opt)
-  }
   return ret
   
 })

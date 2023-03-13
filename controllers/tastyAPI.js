@@ -21,7 +21,6 @@ const getTastyApiResponse = async(req,res,next) => {
     }
 
     
-    console.log(url)
     const options = {
         method: 'GET',
         headers: {
