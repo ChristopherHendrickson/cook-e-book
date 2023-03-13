@@ -28,14 +28,19 @@ const getTastyApiResponse = async(req,res,next) => {
             'X-RapidAPI-Host': X_RapidAPI_Host
             }
     };
-
+    console.log(url)
     const responseData = await fetch(url, options)
-    const response = await responseData.json()
-    if (!response.results) { // api has bad error handling, error objects are returned with status 200 with inconsistent object keys. So assuming if there are no results it is an error. 
-        res.status(400).json({message:'Bad Request'})
+    if (responseData.status==200) {
+        const response = await responseData.json()
+        if (!response.results) { // api has bad error handling, error objects are returned with status 200 with inconsistent object keys. So assuming if there are no results it is an error. 
+            res.status(400).json({message:'Bad Request'})
+        } else {
+            return response.results
+        } 
     } else {
-        return response.results
-    } 
+        res.status(400).json({message:'External API Error'})
+    }
+
     
 }
 
