@@ -54,7 +54,7 @@ const Register = () => {
                     <input className='btn-default' type='submit' value='Register'></input>
                 </form>
                 <span>Have an account?</span>
-                <button className='btn-default' onClick={()=>{navigate('/login')}}>Log in</button>
+                <button className='btn-default' onClick={()=>{navigate('/login')}}>Go to log in</button>
             </div>  
         </div>
     

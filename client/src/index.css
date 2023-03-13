@@ -641,7 +641,8 @@ h1 {
 .s-list-n.gotten {
     color:#b6b6b6;
     transition: 0.3s;
-    padding:4px 8px;
+    padding:1px 8px;
+    
 }
 
 .s-list-gen {
