@@ -54,7 +54,7 @@ const Browse = () => {
         
         const q = fields.query.replace(/[^a-zA-Z0-9 ]/g, '');
 
-        let url = `api/external/recipes?q=${q}&from=${from}`
+        let url = `/api/external/recipes?q=${q}&from=${from}`
         
         if (tagString) {
             url+=`&tags=${tagString}`

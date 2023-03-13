@@ -21,7 +21,7 @@ const Login = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        const res = await fetch("api/auth/login", {
+        const res = await fetch("/api/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
