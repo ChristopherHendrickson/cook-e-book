@@ -3,10 +3,12 @@ const router = express.Router()
 require('dotenv').config()
 const X_RapidAPI_Key = process.env.X_RapidAPI_Key
 const X_RapidAPI_Host = process.env.X_RapidAPI_Host
-
+const fetch = (...args) =>
+	import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 
 const getTastyApiResponse = async(req,res,next) => {
+
     let url = `https://tasty.p.rapidapi.com/recipes/list?size=15&tags=dinner`;
 
     if (req.query.tags) {
