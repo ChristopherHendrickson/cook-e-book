@@ -46,7 +46,7 @@ const EditRecipe = ({ recipe, handleClose } ) => {
                 return {
                     ingName: c.ingredient.name,
                     raw_text: c.raw_text,
-                    quantity: c.measurement.quantity,
+                    quantity: c.measurement.quantity == '0' ? '' : c.measurement.quantity,
                     unit: c.measurement.unitAbbreviation
                 }
             })

@@ -1,10 +1,19 @@
 const express = require('express')
 const router = express.Router()
 const cors = require('cors')
+const fetch = (...args) =>
+	import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-// The purpose of this is to provide an endpoint I can continuously request to prevent my app from sleeping when it is hosted on free tiers :)
-// I have a clock on my portfolio website sending requests in 15 minute intervals (sleep period of render)
-router.get('/api/internal/wakeup', cors(), async(req,res,next)=>{
+let counting = false
+
+router.post('/api/internal/wakeup', cors(), async(req,res,next)=>{
     res.status(200).json("Woken")
+    if (req.body.return_URL && !counting) {
+        counting = true
+        setTimeout(async () => {
+            counting = false
+            await fetch(req.body.return_URL)            
+        }, 600000);
+    }
 })
- module.exports = router
+module.exports = router

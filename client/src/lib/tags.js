@@ -2221,7 +2221,7 @@ const tags = {
   }
 
 
-const options = ["Vegetarian","Vegan","Pescatarian","Dairy-Free","Gluten-Free","Keto","Healthy","Low-Carb","High-Protein","High-Fiber","Chinese","Japanese","Thai","Venezuelan","South African","French","Korean","Greek","Indian","Italian","Mexican","German","Middle Eastern","Hawaiian","Cuban","British","Vietnamese","Seafood","Under 15 Minutes","Under 30 Minutes","Under 45 Minutes","Under 1 Hour","5 Ingredients or Less","Easy"]
+const options = ["Vegetarian","Vegan","Pescatarian","Dairy-Free","Gluten-Free","Keto","Healthy","Low-Carb","High-Protein","High-Fiber","Chinese","Japanese","Thai","French","Korean","Greek","Indian","Italian","Mexican","Middle Eastern","British","Vietnamese","Seafood","Under 15 Minutes","Under 30 Minutes","Under 45 Minutes","Under 1 Hour","5 Ingredients or Less","Easy"]
 
 const exp = options.map((opt)=>{
   const ret = tags['results'].find((tag)=>{

@@ -53,7 +53,9 @@ const TopNav = ( {currentPage} ) => {
         </nav>
 
         <div className='nav-dividor-container'>
+
             <div className='nav-dividor-shape'></div>
+
         </div>
         </>
     )
