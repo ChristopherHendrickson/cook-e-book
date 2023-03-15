@@ -7,13 +7,15 @@ const fetch = (...args) =>
 let counting = false
 
 router.post('/api/internal/wakeup', cors(), async(req,res,next)=>{
+    console.log('test')
     res.status(200).json("Woken")
-    if (req.body.return_URL && !counting) {
+    if (!counting) {
         counting = true
         setTimeout(async () => {
             counting = false
-            await fetch(req.body.return_URL)            
-        }, 600000);
+            const res = await fetch('https://christopherhendrickson.dev')
+        }, 500000);
     }
 })
+
 module.exports = router
