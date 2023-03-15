@@ -6,14 +6,14 @@ const fetch = (...args) =>
 
 let counting = false
 
-router.post('/api/internal/wakeup', cors(), async(req,res,next)=>{
+router.get('/api/internal/wakeup', cors(), async(req,res,next)=>{
     console.log('test')
     res.status(200).json("Woken")
     if (!counting) {
         counting = true
         setTimeout(async () => {
             counting = false
-            const res = await fetch('https://christopherhendrickson.dev')
+            const res = await fetch('https://cookebook.onrender.com/api/internal/wake')
         }, 500000);
     }
 })
