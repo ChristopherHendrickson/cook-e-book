@@ -13,8 +13,8 @@ router.get('/api/internal/wakeup', cors(), async(req,res,next)=>{
         counting = true
         setTimeout(async () => {
             counting = false
-            const res = await fetch('https://cookebook.onrender.com/api/internal/wake')
-        }, 500000);
+            const res = await fetch('https://cookebook.onrender.com/api/internal/wakeup')
+        }, 100000);
     }
 })
 
