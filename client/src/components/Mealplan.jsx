@@ -4,6 +4,7 @@ import { SavedRecipesContext } from '../context/savedRecipesContext'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import clone from 'deepclone'
 import TopNav from './TopNav'
 import Loader from './Loader'
 import MealplanDisplay from './MealplanDisplay'
@@ -13,6 +14,8 @@ import Recipe from './Recipe'
 import BackToTop from './BackToTop'
 import RecipeDetails from './RecipeDetails' 
 import Tags from './Tags'
+
+
 
 const daysOfTheWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
@@ -27,15 +30,15 @@ let toastCooldown = false
 const MealPlan = () => {
 
     const [savedRecipes, setSavedRecipes] = useContext(SavedRecipesContext)
-    const [mealplan, setMealplan] = useContext(MealplanContext)
+    const [mealplanDBState, setMealplanDBState] = useContext(MealplanContext)
     const [displayRecipe,setDisplayRecipe] = useState(null)
-    const [mealplanDBState, setMealplanSavedState] = useState(mealplan)
+    const [mealplan, setMealplan] = useState(clone(mealplanDBState))
     const [mealplanUpdated, setMealplanUpdated] = useState(false)
     const [selectedDays, setSelectedDays] = useState(daysOfTheWeek)
     const [filterByFavourites,setFilterByFavourites] = useState(false)
     const [filteredRecipes, setFilteredRecipes] = useState(savedRecipes)
     const [filterTags,setFilterTags] = useState([])
-
+    
 
     const filterRecipes = () => {
         if (savedRecipes) {
@@ -67,7 +70,7 @@ const MealPlan = () => {
             if (res.status==200) {
                 const data = await res.json()
                 setMealplan(data.mealplan)
-                setMealplanSavedState(data.mealplan)
+                setMealplanDBState(data.mealplan)
                 toast.success('Meal plan saved')
                 setMealplanUpdated(false)
             } else {
@@ -78,7 +81,7 @@ const MealPlan = () => {
     }
 
     const handleUndo = () => {
-        setMealplan(mealplanDBState)
+        setMealplan(clone(mealplanDBState))
         setMealplanUpdated(false)
         const savedDays = Object.keys(mealplanDBState.recipes).filter((day)=>{
             return mealplanDBState.recipes[day]
@@ -161,20 +164,20 @@ const MealPlan = () => {
 
     useEffect(()=>{
 
-        if (mealplan) {
-            const savedDays = Object.keys(mealplan.recipes).filter((day)=>{
-                return mealplan.recipes[day]
+
+        if (mealplanDBState) {
+            const savedDays = Object.keys(mealplanDBState.recipes).filter((day)=>{
+                return mealplanDBState.recipes[day]
             })
             setSelectedDays(savedDays)
         }
 
-        if (mealplan && !mealplanAlreadyRecieved) {
+        if (mealplanDBState && !mealplanAlreadyRecieved) {
             mealplanAlreadyRecieved = true
-            setMealplanSavedState({...mealplan})
-
+            setMealplan(clone(mealplanDBState))
         }
-
-    },[mealplan])
+        
+    },[mealplanDBState])
 
     useEffect(()=>{
         filterRecipes()

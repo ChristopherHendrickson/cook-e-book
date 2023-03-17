@@ -718,33 +718,35 @@ h1 {
 
 .btn-icon {
     background-color: transparent;
-    border:none;
+    border:0px;
+    border-radius: 50%;
     padding:0;
     margin:0;
-    border-radius: 50%;
+    box-sizing: content-box;
 }
 
 .btn-icon:active {
-    background-color: rgb(235, 235, 235);
+    background-color: rgb(230, 230, 230);
     transform: 0.9s ease-out;
 }
 
 .btn-icon.sm {
-    width:25px;
-    height:25px;
+    width:29px;
+    height:29px;
 }
 
 .btn-icon.med {
-    width:50px;
-    height:50px;
+    width:54px;
+    height:54px;
 }
 
 .btn-icon.lg {
-    width:100px;
-    height:100px;
+    width:104px;
+    height:104px;
 }
 
 .btn-icon-content {
+    padding: 4px;
     width:inherit;
     height:inherit;
 }
@@ -1153,6 +1155,7 @@ th {
 .clickable {
     font-weight: bold;
     text-decoration: underline;
+    cursor: pointer;
 }
 
 .clickable:active {
