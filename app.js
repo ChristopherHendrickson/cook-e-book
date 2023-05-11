@@ -67,7 +67,7 @@ app.use((req, res) => {
 });
 
 
-
+// db connect
 mongoose.connect(dbURL, ()=>{
   console.log('connected to database')
 })
